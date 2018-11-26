@@ -1,0 +1,72 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/electrocarDetails.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <title>Electronic</title>
+</head>
+<body>
+    @Html.Partial("~/Views/Header/HeaderAdmin.cshtml")
+    <div class="main-area">
+        <div class="content">
+            <div class="back-button" id="backButton"><div class="fa fa-caret-left"></div><div class="back-button-text">Вернуться</div></div>
+            <div class='car-wrapper'>
+                <div class='car-image-wrapper'><img src='/images/@(Model.Image != string.Empty ? Model.Image : "no-image-car.png")' /></div>
+                <div class='car-info'>
+                    <div class='car-header'>
+                        <div>@Model.MarkName @Model.Model</div>
+                        <div class="add-button" id="editButton"><div class="fa fa-pencil"></div><div class="add-button-text">Редактировать</div></div>
+                    </div>
+                    <div class='car-price'>@(Model.Price)$</div>
+                    <div class='car-description'>@Model.Description</div>
+                </div>
+            </div>
+            <div class="car-characteristics-header-wrapper">
+                <div class="car-characteristics-header">Характеристики</div>
+                <div>@Model.VendorCode</div>
+            </div>
+            <div class="characteristics">
+                <div class="car-row">
+                    <div class="car-row-name">Мощность двигателя</div>
+                    <div class="car-row-value">@Model.Characteristic.Power</div>
+                </div>
+                <div class="car-row">
+                    <div class="car-row-name">Тип КПП</div>
+                    <div class="car-row-value">@Model.Characteristic.Gearbox</div>
+                </div>
+                <div class="car-row">
+                    <div class="car-row-name">Разгон до 100 км/час</div>
+                    <div class="car-row-value">@Model.Characteristic.Acceleration секунд</div>
+                </div>
+                <div class="car-row">
+                    <div class="car-row-name">Максимальная скорость</div>
+                    <div class="car-row-value">@Model.Characteristic.MaxSpeed км/час</div>
+                </div>
+                <div class="car-row">
+                    <div class="car-row-name">Запас хода</div>
+                    <div class="car-row-value">до @Model.Characteristic.PowerReserve км/час</div>
+                </div>
+                <div class="car-row">
+                    <div class="car-row-name">Привод</div>
+                    <div class="car-row-value">@Model.Characteristic.DriveUnit</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(function () {
+            $("#backButton").click(function (e) {
+                window.location.href = "/electrocars";
+            });
+
+            $("#editButton").click(function (e) {
+                document.location.href = "/electrocars/edit/@Model.CarId";
+            });
+        });
+    </script>
+</body>
+</html>

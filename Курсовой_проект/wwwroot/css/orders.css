@@ -1,0 +1,78 @@
+﻿.main-area {
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.header {
+    flex-shrink: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 30px;
+    background-color: rgba(50,50,50,1);
+    color: rgba(255,255,255,1);
+    border: none;
+    border-radius: 5px;
+    padding: 0 15px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    cursor: default;
+    outline: none;
+}
+.ordersWrap {
+    display: flex;
+    flex: 1;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.order-wrapper {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+    width: 100%;
+    background-color: rgba(240,240,240,1);
+    cursor: default;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    color: rgba(75,75,75,1);
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.order-wrapper>div{
+    width: 100%;
+}
+.button.orders {
+    height: 30px;
+    margin-left: 10px;
+}
+
+.row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.empty-orders {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border: 2px dotted rgba(200,200,200,1);
+    font-size: 1.2em;
+    color: rgba(200,200,200,1);
+    border-radius: 5px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+.input-checkbox {
+    width: 15px;
+    height: 15px;
+}

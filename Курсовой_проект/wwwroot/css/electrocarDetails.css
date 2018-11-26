@@ -1,0 +1,307 @@
+﻿.main-area {
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.back-button {
+    flex-shrink: 0;
+    display: flex;
+    height: 30px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    background-color: rgba(50,50,50,1);
+    color: rgba(255,255,255,1);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.back-button:hover {
+    background-color: rgba(75,75,75,1);
+}
+.back-button-text {
+    margin-left: 10px;
+}
+
+.car-wrapper {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    flex-shrink: 0;
+    border-radius: 5px;
+    padding: 10px 0;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+.car-image-wrapper {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+}
+
+.car-image-wrapper > img {
+    width: 100%;    
+}
+
+.car-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0 10px 10px;
+    box-sizing: border-box;
+}
+
+.car-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.6em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.car-price {
+    margin-bottom: 10px;
+}
+
+.buy-button {
+    display: flex;
+    height: 36px;
+    font-size: 0.7em;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    background-color: rgba(0,220,0,1);
+    color: rgba(255,255,255,1);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.buy-button:hover {
+    background-color: rgba(0,200,0,1);
+}
+
+.buy-button-text {
+    margin-left: 10px;
+}
+
+.car-characteristics-header-wrapper {
+    width: 100%;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.car-characteristics-header {
+    font-size: 1.6em;
+    font-weight: bold;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+
+.characteristics {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(200,200,200,1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.car-row {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 50px;
+    background-color: rgba(255,255,255,1);
+    padding: 10px;
+    box-sizing: border-box;
+}
+.car-row:nth-of-type(2n+1) {
+    background-color: rgba(220,230,240,1);
+}
+.car-row-name {
+    width: 100%;
+}
+.car-row-value {
+    width: 100%;
+}
+
+.blackout {
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 2;
+}
+.blackout.hidden {
+    display: none;
+}
+
+.modal-window {
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    min-width: 300px;
+    background-color: rgba(255,255,255,1);
+    border-radius: 5px;
+    padding: 20px 10px;
+}
+
+.modal-window-text {
+    margin-bottom: 20px;
+}
+
+.add-button {
+    display: flex;
+    height: 36px;
+    font-size: 0.7em;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    background-color: rgba(170,200,230,1);
+    color: rgba(255,255,255,1);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background-color: rgba(150,180,210,1);
+}
+
+.add-button-text {
+    margin-left: 10px;
+}
+
+.add-input {
+    min-width: 150px;
+    height: 36px;
+    background-color: rgba(240,240,240,1);
+    color: rgba(75,75,75,1);
+    border-radius: 5px;
+    border: 1px solid transparent;
+    outline: none;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+.add-input::placeholder {
+    color: rgba(150,150,150,1);
+}
+.add-input:focus {
+    border: 1px solid rgba(8, 146, 254, 1);
+}
+.add-input.textarea {
+    padding: 10px;
+    width: 100%;
+    height: 40px;
+    min-height: 40px;
+    max-height: 300px;
+    resize: vertical;
+}
+
+.add-car-text-margin {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.buttons-wrapper {
+    display: flex;
+}
+
+.remove-button {
+    flex-shrink: 0;
+    display: flex;
+    height: 36px;
+    font-size: 0.7em;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    background-color: rgba(210,50,8,1);
+    color: rgba(255,255,255,1);
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.remove-button:hover {
+    background-color: rgba(190,40,8,1);
+}
+
+.add-image-button {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    background-color: rgba(0,0,0,0.4);
+    color: rgba(255,255,255,1);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.add-image-button.hidden {
+    display: none;
+}
+
+.add-image-button:hover {
+    background-color: rgba(0,0,0,0.5);
+}
+
+.add-image-button > .icon {
+    padding-right: 10px;
+}
+
+.add-image-button > .add-image-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+
+.car-image-wrapper > .image-file {
+    display: none;
+}
+
+.car-image-wrapper > .delete-image {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(255,255,255,1);
+    background-color: rgba(0,0,0,0.4);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.car-image-wrapper > .delete-image.hidden {
+    display: none;
+}
+
+.car-image-wrapper > .delete-image:hover {
+    background-color: rgba(0,0,0,0.5);
+}

@@ -1,0 +1,63 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/electrocars.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <title>Electronic</title>
+</head>
+<body>
+    @Html.Partial("~/Views/Header/HeaderUser.cshtml")
+    <div class="main-area">
+        <div class="content">
+            <div class="wrap-back-button">
+                <div class="back-button" id="backButton"><div class="fa fa-caret-left"></div><div class="back-button-text">Вернуться</div></div>
+                <div class="header">@Model.MarkName</div>
+            </div>
+            <div class="marks" id="marks">@Model.Description</div>
+            <div class="header">Електромобили от @Model.MarkName</div>
+            <div class="cars" id="cars"></div>
+        </div>
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(function () {
+            $("#backButton").click(function (e) {
+                history.back();
+            });
+        });
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/cars/@Model.MarkName",
+                success: function (response) {
+                    var text = "";
+                    for (var elem in response) {
+                        text += "<div class='car-wrapper' onclick='openDetails(" + response[elem]["carId"] + ")'>" +
+                            "<div class='car-image-wrapper'><img src='/images/" + (response[elem]["image"] != "" ? response[elem]["image"] : "no-image-car.png") + "' /></div>" +
+                                    "<div class='car-info'>" +
+                                        "<div class='car-header'>" + response[elem]["markName"] + " " + response[elem]["model"] + "</div>" +
+                                        "<div class='car-price'>" + response[elem]["price"] + "$" + "</div>" +
+                                        "<div class='car-description'>" + response[elem]["description"] + "</div>" +
+                                    "</div>" +
+                                "</div>";
+                    }
+
+                    if (text != "") {
+                        $("#cars").html(text);
+                    } else {
+                        $("#cars").html("<div class='empty-cars'>Автомобили отсутствуют</div>");
+                    }
+                }
+            });
+        });
+
+        function openDetails(id) {
+            document.location.href = "/electrocars/details/"+id;
+        }
+    </script>
+</body>
+</html>

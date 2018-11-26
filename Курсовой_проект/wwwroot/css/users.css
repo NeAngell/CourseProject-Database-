@@ -1,0 +1,86 @@
+﻿.main-area {
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.header {
+    flex-shrink: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 30px;
+    background-color: rgba(50,50,50,1);
+    color: rgba(255,255,255,1);
+    border: none;
+    border-radius: 5px;
+    padding: 0 15px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    cursor: default;
+    outline: none;
+}
+
+.usersWrap {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.user-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+    background-color: rgba(240,240,240,1);
+    cursor: default;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    color: rgba(75,75,75,1);
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+}
+.column.right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.cell {
+    flex-shrink: 0;
+    display: flex;
+    width: 100%;
+}
+
+.username{
+    font-weight: bold;
+    margin: 0 10px;
+}
+.email {
+    margin-left: 10px;
+}
+.phone {
+    margin-left: 10px;
+}
+
+.register-date, .user-permissions {
+    color: rgba(150,150,150,1);
+}
+
+.button.users {
+    height: 30px;
+    margin-top: 10px;
+}

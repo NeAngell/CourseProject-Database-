@@ -1,0 +1,90 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/electrocarDetails.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <title>Electronic</title>
+</head>
+<body>
+    @Html.Partial("~/Views/Header/Header.cshtml")
+    <div class="main-area">
+        <div class="content">
+            <div class="back-button" id="backButton"><div class="fa fa-caret-left"></div><div class="back-button-text">Вернуться</div></div>
+            <div class='car-wrapper'>
+                <div class='car-image-wrapper'><img src='/images/@(Model.Image != string.Empty ? Model.Image : "no-image-car.png")' /></div>
+                <div class='car-info'>
+                    <div class='car-header'>
+                        <div>@Model.MarkName @Model.Model</div>
+                        <div class="buy-button"><div class="fa fa-shopping-cart"></div><div class="buy-button-text">Купить</div></div>
+                    </div>
+                    <div class='car-price'>@(Model.Price)$</div>
+                    <div class='car-description'>@Model.Description</div>
+                </div>
+            </div>
+            <div class="car-characteristics-header">Характеристики</div>
+            <div class="characteristics">
+                <div class="car-row">
+                    <div class="car-row-name">Мощность двигателя</div>
+                    <div class="car-row-value">@Model.Characteristic.Power</div>
+                </div>
+                <div class="car-row">
+                    <div class="car-row-name">Тип КПП</div>
+                    <div class="car-row-value">@Model.Characteristic.Gearbox</div>
+                </div>
+                <div class="car-row">
+                    <div class="car-row-name">Разгон до 100 км/час</div>
+                    <div class="car-row-value">@Model.Characteristic.Acceleration секунд</div>
+                </div>
+                <div class="car-row">
+                    <div class="car-row-name">Максимальная скорость</div>
+                    <div class="car-row-value">@Model.Characteristic.MaxSpeed км/час</div>
+                </div>
+                <div class="car-row">
+                    <div class="car-row-name">Запас хода</div>
+                    <div class="car-row-value">до @Model.Characteristic.PowerReserve км/час</div>
+                </div>
+                <div class="car-row">
+                    <div class="car-row-name">Привод</div>
+                    <div class="car-row-value">@Model.Characteristic.DriveUnit</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="blackout hidden" id="blackout">
+        <div class="modal-window">
+            <div class="modal-window-text">
+                Упс! Вы кажется не являетесь пользователем нашего сайта.<br />
+                Но не переживайте, это легко поправить!<br />
+                Жмите на кнопку ниже и регистрируйтесь.
+            </div>
+            <input type="button" class="button" id="signUpButton" value="Зарегистрироваться" />
+        </div>
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(function () {
+            $("#backButton").click(function (e) {
+                history.back();
+            });
+
+            $(".buy-button").click(function (e) {
+                $("#blackout").removeClass("hidden");
+            });
+
+            $(".blackout").click(function (e) {
+                $(this).addClass("hidden");
+            });
+            $(".modal-window").click(function (e) {
+                e.stopPropagation();
+            })
+
+            $("#signUpButton").click(function (e) {
+                document.location.href = "/login";
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+﻿<header>
+    <div class="logo">Electronic</div>
+    <div class="menu-button" id="menuButton">
+        <div class="menu-button-text">Меню</div>
+        <div class="menu-button-image"><div class="fa fa-bars"></div></div>
+    </div>
+</header>
+<div class="menu hidden" id="menu">
+    <div class="menu-item" id="electrocars"><div class="menu-item-text">Электромобили</div><div class="menu-item-image"><div class="fa fa-shopping-cart"></div></div></div>
+    <div class="menu-item" id="users"><div class="menu-item-text">Пользователи</div><div class="menu-item-image"><div class="fa fa-user"></div></div></div>
+    <div class="menu-item" id="orders"><div class="menu-item-text">Заказы</div><div class="menu-item-image"><div class="fa fa-credit-card"></div></div></div>
+    <div class="menu-item" id="questions"><div class="menu-item-text">Вопросы</div><div class="menu-item-image"><div class="fa fa-question"></div></div></div>
+    <div class="menu-item" id="contacts"><div class="menu-item-text">Контакты</div><div class="menu-item-image"><div class="fa fa-phone"></div></div></div>
+    <div class="menu-item" id="logout"><div class="menu-item-text">Выйти</div><div class="menu-item-image"><div class="fa fa-sign-out"></div></div></div>
+</div>
+<script src="~/js/jquery-3.2.1.min.js"></script>
+<script>
+    $(function () {
+        $("#menuButton").click(function (e) {
+            e.preventDefault();
+            if ($("#menu").hasClass("hidden")) {
+                $("#menu").removeClass("hidden");
+            } else {
+                $("#menu").addClass("hidden");
+            }
+            return false;
+        });
+
+        $("#electrocars").click(function (e) {
+            window.location.href = "/electrocars";
+        });
+        $("#orders").click(function (e) {
+            window.location.href = "/orders";
+        });
+        $("#users").click(function (e) {
+            window.location.href = "/users";
+        });
+        $("#questions").click(function (e) {
+            window.location.href = "/questions";
+        });
+        $("#contacts").click(function (e) {
+            window.location.href = "/contacts";
+        });
+        $("#logout").click(function (e) {
+            $.ajax({
+                type: "GET",
+                url: "/api/auth/logout",
+                success: function (response) {
+                    window.location.href = "/";
+                }
+            });
+        });
+
+        $("body").click(function (e) {
+            $("#menu").addClass("hidden");
+        });
+    });
+</script>

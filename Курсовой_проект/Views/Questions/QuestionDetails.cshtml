@@ -1,0 +1,112 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/questionDetails.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <title>Electronic</title>
+</head>
+<body>
+    @if ((string)ViewData["permissions"] == "A")
+    {
+        Html.RenderPartial("~/Views/Header/HeaderAdmin.cshtml");
+    }
+    else if ((string)ViewData["permissions"] == "U")
+    {
+        Html.RenderPartial("~/Views/Header/HeaderUser.cshtml");
+    }
+    <div class="main-area">
+        <div class="content" id="content">
+            <div class="wrap-back-button">
+                <div class="back-button" id="backButton"><div class="fa fa-caret-left"></div><div class="back-button-text">Вернуться</div></div>
+                <div class="header">Вопрос</div>
+            </div>
+            <div class="question-wrapper">
+                <div class='text-wrapper'>
+                    <div class="question-head">@Model.Header</div>
+                    <div>@Model.Text</div>
+                </div>
+                <div class="info-wrapper">
+                    <div>@Model.Date</div>
+                    <div>@Model.User.Username</div>
+                    <div class="more-info">@(Model.User.UserPermissions.ToUpper() == "A" ? "Admin" : "User")</div>
+                </div>
+            </div>
+            <div class="header">Добавить ответ</div>
+            <form id="addAnswerForm" class="answer-input-wrapper">
+                <textarea type="text" class="add-input" id="answerInput" placeholder="Впишите ваш ответ сюда" required></textarea>
+                <input type="submit" class="button question" id="answerButton" value="Ответить" />
+            </form>
+            <div class="wrap-back-button">
+                <div class="header">Ответы</div>
+                <div class="header" id="answerCount">-</div>
+            </div>
+            <div class="answersWrap" id="answersWrap"></div>
+        </div>
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script>
+
+        $(function () {
+            $("#backButton").click(function (e) {
+                history.back();
+            });
+        });
+
+        $(function () {
+            $("#addAnswerForm").submit(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/answers/add",
+                    data: JSON.stringify({ QuestionId: @Model.QuestionId, Text: $("#answerInput").val() }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        getAnswers();
+                    }
+                });
+
+                return false;
+            });
+        });
+
+        $(document).ready(function () {
+            getAnswers();
+        });
+
+        function getAnswers() {
+            $.ajax({
+                type: "GET",
+                url: "/api/answers/@Model.QuestionId",
+                success: function (response) {
+
+                    $("#answerCount").html(response.length);
+
+                    var text = "";
+                    console.log(response);
+                    for (var elem in response) {
+
+                        text += "<div class='answer-wrapper'>" +
+                                    "<div class='text-wrapper'>" +
+                                        "<div>"+ response[elem]["text"] +"</div>" +
+                                    "</div>" +
+                                    "<div class='info-wrapper'>" +
+                                        "<div>"+ response[elem]["date"] +"</div>" +
+                                        "<div>"+ response[elem]["user"]["username"] +"</div>" +
+                                        "<div class='more-info'>"+ (response[elem]["user"]["userPermissions"].toUpperCase() == "A" ? "Admin" : "User" ) +"</div>" +
+                                    "</div>" +
+                                "</div>";
+                    }
+
+                    if (text != "") {
+                        $("#answersWrap").html(text);
+                    } else {
+                        $("#answersWrap").html("<div class='empty-answers'>Ответы отсутствуют</div>");
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

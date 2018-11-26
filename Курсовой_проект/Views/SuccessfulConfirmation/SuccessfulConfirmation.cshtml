@@ -1,0 +1,26 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/successfulConfirmation.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <title>Electronic</title>
+</head>
+<body>
+    <div class="info-wrapper">
+        <div class="logo">Electrocar</div>
+        <div class="info-text">Аккаунт был успешно подтвержден<br/>Теперь вы можете войти в систему<br/>Жмите на кнопку ниже!</div>
+        <input type="button" name="mainPage" class="button" id="mainPage" value="Перейти на страницу" />
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(function () {
+            $("#mainPage").click(function (e) {
+                window.location.href = "/";
+            });
+        });
+    </script>
+</body>
+</html>

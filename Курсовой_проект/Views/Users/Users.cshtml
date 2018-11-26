@@ -1,0 +1,94 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/users.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <title>Electronic</title>
+</head>
+<body>
+    @Html.Partial("~/Views/Header/HeaderAdmin.cshtml")
+    <div class="main-area">
+        <div class="content" id="content">
+            <div class="header">Пользователи</div>
+            <div class="usersWrap" id="usersWrap"></div>
+        </div>
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            getUsers();
+        });
+
+        function getUsers() { 
+            $.get("/api/apiusers", function (result) {
+                var text = "";
+                for (var elem in result) {
+
+                    var userPermissions = "";
+                    var buttonName = "";
+                    var functionName = "";
+                    switch (result[elem]["userPermissions"]) {
+                        case "A":
+                            userPermissions = "Admin";
+                            buttonName = "Сделать пользователем";
+                            functionName = "setUser(" + result[elem]["userId"] + ")";
+                            break;
+                        case "U":
+                            userPermissions = "User";
+                            buttonName = "Сделать администратором";
+                            functionName = "setAdmin(" + result[elem]["userId"] + ")";
+                            break;
+                    }
+
+                    text += "<div class='user-wrapper'>" +
+                        "<div class='row'>" +
+                        "<div class='column'>" +
+                        "<div class='row'>" +
+                        "Username:" +
+                        "<div class='username'>" + result[elem]["username"] + "</div>" +
+                        "<div class='full-name'>(" + result[elem]["firstName"] + " " + result[elem]["lastName"] + " " + result[elem]["patronymic"] + ")</div>" +
+                        "</div>" +
+                        "<div class='row'>E-mail:<div class='email'><b>" + result[elem]["email"] + "</b></div></div>" +
+                        "<div class='row'>Phone:<div class='phone'><b>" + result[elem]["phone"] + "</b></div></div>" +
+                        "</div>" +
+                        "<div class='column right'>" +
+                        "<div class='register-date'>" + result[elem]["date"] + "</div>" +
+                        "<div class='user-permissions'>" + userPermissions + "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<input type='button' class='button users' onclick='" + functionName + "' value='" + buttonName + "' />" +
+                        "</div>";
+                }
+
+                $("#usersWrap").html(text);
+            });
+        }
+
+        function setUser(id) { 
+            $.ajax({
+                type: "POST",
+                url: "api/apiusers/setUser",
+                data: JSON.stringify(id),
+                contentType: 'application/json',
+                success: function (response) {
+                    getUsers();
+                }
+            });
+        }
+        function setAdmin(id) { 
+            $.ajax({
+                type: "POST",
+                url: "api/apiusers/setAdmin",
+                data: JSON.stringify(id),
+                contentType: 'application/json',
+                success: function (response) {
+                    getUsers();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+﻿.main-area-row {
+    display: flex;
+    align-items: center;
+}
+
+.welcome-image {
+    flex: 1;
+    width: 50%;
+    user-select: none;
+}
+
+.welcome-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 0 5%;
+    box-sizing: border-box;
+}
+
+.welcome-text {
+    font-size: 1.3em;
+    text-align: center;
+    margin-bottom: 20px;
+}

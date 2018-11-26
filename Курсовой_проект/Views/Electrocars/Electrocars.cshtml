@@ -1,0 +1,192 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/electrocars.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <title>Electronic</title>
+</head>
+<body>
+    @Html.Partial("~/Views/Header/Header.cshtml")
+    <div class="main-area">
+        <div class="content">
+            <div class="header">Марки</div>
+            <div class="marks" id="marks"></div>
+            <div class="row-with-search">
+                <div class="wrap-back-button">
+                    <div class="header">Електромобили</div>
+                </div>
+                <div class="search-wrap">
+                    <input type="text" class="input search" id="carsSearch" placeholder="Поиск" />
+                    <div class="icon-wrap"><div class="fa fa-search"></div></div>
+                </div>
+            </div>
+            <div class="cars-wrapper">
+                <div class="cars-param">
+                    <div class="price-select-wrapper">
+                        <input type="number" class="input" id="priceMin" min="0" max="999999999" value="0" />
+                        <div class="separator">-</div>
+                        <input type="number" class="input" id="priceMax" min="0" max="999999999" value="1" />
+                    </div>
+                    <div class="slider" id="slider-range"></div>
+                    <input type="button" class="button param" id="apply" value="Применить"/>
+                </div>
+                <div class="cars" id="cars"></div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "api/marks",
+                success: function (response) {
+                    var text = "";
+                    for (var elem in response) {
+                        text += "<input type='button' class='light-button' onclick='openMark(\"" + response[elem]["markName"] + "\");' value='" + response[elem]["markName"] + "' />";
+                    }
+
+                    if (text != "") {
+                        $("#marks").html(text);
+                    } else {
+                        $("#marks").html("<div class='empty-marks'>Марки автомобилей отсутствуют</div>");
+                    }
+                }
+            });
+
+            getCars();
+
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: 1,
+                values: [0, 1],
+                slide: function (event, ui) {
+                    $("#priceMin").val(ui.values[0]);
+                    $("#priceMax").val(ui.values[1]);
+                }
+            });
+            $("#priceMin").change(function () {
+                $("#slider-range").slider("option", "values", [$(this).val(), $("#priceMax").val()]);
+            });
+            $("#priceMax").change(function () { 
+                $("#slider-range").slider("option", "values", [$("#priceMin").val(), $(this).val()]);
+            });
+
+            $("#carsSearch").on("input", function () { 
+
+                if ($(this).val().length == 0) {
+                    getCars();
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/cars/search",
+                    data: JSON.stringify($(this).val()),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        var text = "";
+
+                        for (var elem in response) {
+
+                            text += "<div class='car-wrapper' onclick='openDetails(" + response[elem]["carId"] + ")'>" +
+                                "<div class='car-image-wrapper'><img src='/images/" + (response[elem]["image"] != "" ? response[elem]["image"] : "no-image-car.png") + "' /></div>" +
+                                "<div class='car-info'>" +
+                                "<div class='car-header'>" + response[elem]["markName"] + " " + response[elem]["model"] + "</div>" +
+                                "<div class='car-price'>" + response[elem]["price"] + "$" + "</div>" +
+                                "<div class='car-description'>" + response[elem]["description"] + "</div>" +
+                                "</div>" +
+                                "</div>";
+                        }
+
+                        if (text != "") {
+                            $("#cars").html(text);
+                        } else {
+                            $("#cars").html("<div class='empty-cars'>Не найдено</div>");
+                        }
+                    }
+                });
+            });
+
+            $("#apply").click(function () { 
+                $.ajax({
+                    type: "POST",
+                    url: "api/cars/getByPrice",
+                    data: JSON.stringify([$("#priceMin").val(), $("#priceMax").val()]),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        var text = "";
+
+                        for (var elem in response) {
+
+                            text += "<div class='car-wrapper' onclick='openDetails(" + response[elem]["carId"] + ")'>" +
+                                "<div class='car-image-wrapper'><img src='/images/" + (response[elem]["image"] != "" ? response[elem]["image"] : "no-image-car.png") + "' /></div>" +
+                                "<div class='car-info'>" +
+                                "<div class='car-header'>" + response[elem]["markName"] + " " + response[elem]["model"] + "</div>" +
+                                "<div class='car-price'>" + response[elem]["price"] + "$" + "</div>" +
+                                "<div class='car-description'>" + response[elem]["description"] + "</div>" +
+                                "</div>" +
+                                "</div>";
+                        }
+
+                        if (text != "") {
+                            $("#cars").html(text);
+                        } else {
+                            $("#cars").html("<div class='empty-cars'>Не найдено</div>");
+                        }
+                    }
+                });
+            });
+        });
+
+        function getCars() { 
+            $.ajax({
+                type: "GET",
+                url: "api/cars",
+                success: function (response) {
+                    var text = "";
+                    var maxPrice = 1;
+                    for (var elem in response) {
+
+                        if (response[elem]["price"] > maxPrice) {
+                            maxPrice = response[elem]["price"];
+                        }
+
+                        text += "<div class='car-wrapper' onclick='openDetails(" + response[elem]["carId"] + ")'>" +
+                            "<div class='car-image-wrapper'><img src='/images/" + (response[elem]["image"] != "" ? response[elem]["image"] : "no-image-car.png") + "' /></div>" +
+                            "<div class='car-info'>" +
+                            "<div class='car-header'>" + response[elem]["markName"] + " " + response[elem]["model"] + "</div>" +
+                            "<div class='car-price'>" + response[elem]["price"] + "$" + "</div>" +
+                            "<div class='car-description'>" + response[elem]["description"] + "</div>" +
+                            "</div>" +
+                            "</div>";
+                    }
+
+                    $("#priceMax").val(maxPrice);
+                    $("#slider-range").slider("option", "max", maxPrice);
+                    $("#slider-range").slider("option", "values", [0, maxPrice]);
+
+                    if (text != "") {
+                        $("#cars").html(text);
+                    } else {
+                        $("#cars").html("<div class='empty-cars'>Автомобили отсутствуют</div>");
+                    }
+                }
+            });
+        }
+
+        function openDetails(id) {
+            document.location.href = "/electrocars/details/" + id;
+        }
+        function openMark(markName) {
+            document.location.href = "/electrocars/" + markName;
+        }
+    </script>
+</body>
+</html>

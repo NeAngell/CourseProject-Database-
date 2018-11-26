@@ -1,0 +1,138 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/questions.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <title>Electronic</title>
+</head>
+<body>
+    @Html.Partial("~/Views/Header/HeaderUser.cshtml")
+    <div class="main-area">
+        <div class="content" id="content">
+            <div class="row-with-search">
+                <div class="wrap-back-button">
+                    <div class="header">Вопросы</div>
+                    <div class="back-button" id="addQuestion"><div class="fa fa-plus"></div><div class="back-button-text">Задать вопрос</div></div>
+                </div>
+                <div class="search-wrap">
+                    <input type="text" class="input search" id="questionsSearch" placeholder="Поиск" />
+                    <div class="icon-wrap"><div class="fa fa-search"></div></div>
+                </div>
+            </div>
+            <div class="questionsWrap" id="questionsWrap"></div>
+        </div>
+    </div>
+    <div class="blackout hidden" id="addQuestionWindow">
+        <form class="modal-window" method="post" id="addQuestionForm">
+            <div class="modal-window-text">Добавление вопроса</div>
+            <input type="text" class="add-input" id="questionHeader" placeholder="Заголовок" required/>
+            <textarea class="add-input textarea" id="questionText" placeholder="Описание" required></textarea>
+            <input type="submit" class="button" id="addQuestionButton" value="Добавить" />
+        </form>
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(function () {
+            $("#addQuestion").click(function (e) {
+                $("#addQuestionWindow").removeClass("hidden");
+            });
+
+            $(".blackout").click(function (e) {
+                $(this).addClass("hidden");
+            });
+            $(".modal-window").click(function (e) {
+                e.stopPropagation();
+            })
+
+            $("#addQuestionForm").submit(function (e) {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/apiquestions/add",
+                    data: JSON.stringify({ Header: $("#questionHeader").val(), Text: $("#questionText").val() }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        $(".blackout").addClass("hidden");
+                        getQuestions();
+                    }
+                });
+                return false;
+            });
+
+            $("#questionsSearch").on("input", function () {
+
+                if ($(this).val().length == 0) {
+                    getQuestions();
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "api/apiquestions/search",
+                    data: JSON.stringify($(this).val()),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        var text = "";
+                        for (var elem in result) {
+
+                            text += "<div class='question-wrapper' onclick='openQuestion(" + result[elem]["questionId"] + ")'>" +
+                                "<div class='text-wrapper'>" +
+                                "<div class='question-head'>" + result[elem]["header"] + "</div>" +
+                                "<div>" + result[elem]["text"] + "</div>" +
+                                "</div>" +
+                                "<div class='info-wrapper'>" +
+                                "<div>" + result[elem]["date"] + "</div>" +
+                                "<div>" + result[elem]["user"]["username"] + "</div>" +
+                                "<div>Ответов: " + result[elem]["answersCount"] + "</div>" +
+                                "</div>" +
+                                "</div>";
+                        }
+
+                        if (text != "") {
+                            $("#questionsWrap").html(text);
+                        } else {
+                            $("#questionsWrap").html("<div class='empty-questions'>Ничего не найдено</div>");
+                        }
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            getQuestions();
+        });
+
+        function getQuestions() {
+            $.get("/api/apiquestions", function (result) {
+                var text = "";
+                for (var elem in result) {
+
+                    text += "<div class='question-wrapper' onclick='openQuestion(" + result[elem]["questionId"] + ")'>" +
+                                "<div class='text-wrapper'>" +
+                                    "<div class='question-head'>" + result[elem]["header"] + "</div>" +
+                                    "<div>" + result[elem]["text"] + "</div>" +
+                                "</div>" +
+                                "<div class='info-wrapper'>" +
+                                    "<div>" + result[elem]["date"] + "</div>" +
+                                    "<div>" + result[elem]["user"]["username"] +"</div>" +
+                                    "<div>Ответов: " + result[elem]["answersCount"] + "</div>" +
+                                "</div>" +
+                            "</div>";
+                }
+
+                if (text != "") {
+                    $("#questionsWrap").html(text);
+                } else {
+                    $("#questionsWrap").html("<div class='empty-questions'>Вопросы отсутствуют</div>");
+                }
+            });
+        }
+
+        function openQuestion(id) {
+            window.location.href = "/questions/" + id;
+        }
+    </script>
+</body>
+</html>

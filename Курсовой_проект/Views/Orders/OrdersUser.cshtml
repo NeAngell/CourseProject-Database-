@@ -1,0 +1,70 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/orders.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <title>Electronic</title>
+</head>
+<body>
+    @Html.Partial("~/Views/Header/HeaderUser.cshtml")
+    <div class="main-area">
+        <div class="content" id="content">
+            <div class="header">Мои заказы</div>
+            <div class="ordersWrap" id="ordersWrap"></div>
+        </div>
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            getOrders();
+        });
+
+        function getOrders() {
+            $.ajax({
+                type: "GET",
+                url: "/api/apiorders/myorders",
+                success: function (response) {
+                    var text = "";
+
+                    for (var elem in response) {
+                        var input = "";
+                        if (!response[elem]["deliveryStatus"] && !response[elem]["paymentState"]) {
+                            input = "<input type='button' class='button orders' onclick='removeOrder(" + response[elem]["orderId"] + ")' value='Отменить заказ' />"
+                        }
+                        text += "<div class='order-wrapper'>" +
+                            "<div>Номер заказа: <b>" + response[elem]["orderId"] + "</b></div>" +
+                            "<div><b>" + response[elem]["car"]["markName"] + " " + response[elem]["car"]["model"] + " " + response[elem]["car"]["price"] + "$</b></div>" +
+                                    "<div>Время заказа: <b>" + response[elem]["date"] + "</b></div>" +
+                                    "<div>Доставлено: <b>" + (!response[elem]["deliveryStatus"] ? "нет" : "да") + "</b></div>" +
+                                    "<div>Оплачено: <b>" + (!response[elem]["paymentState"] ? "нет" : "да") + "</b></div>" +
+                                    input +
+                                "</div>";
+                    }
+
+                    if (text != "") {
+                        $("#ordersWrap").html(text);
+                    } else {
+                        $("#ordersWrap").html("<div class='empty-orders'>Заказы отсутствуют</div>");
+                    }
+                    
+                }
+            });
+        }
+
+        function removeOrder(id) { 
+            $.ajax({
+                type: "POST",
+                url: "api/apiorders/remove",
+                data: JSON.stringify(id),
+                contentType: 'application/json',
+                success: function (response) {
+                    getOrders();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

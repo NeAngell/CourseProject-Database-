@@ -1,0 +1,99 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <title>Electronic</title>
+</head>
+<body>
+    @Html.Partial("~/Views/Header/Header.cshtml")
+    <div class="main-area">
+        <div class="window-wrapper" id="loginForm">
+            <form class="window" onsubmit="signIn(this.inputNickname.value, this.inputPassword.value); return false;">
+                <p>Авторизация</p>
+                <input type="text" name="nickname" class="input" id="inputNickname" placeholder="Имя пользователя или e-Mail" required />
+                <input type="password" name="password" class="input" id="inputPassword" placeholder="Пароль" required />
+                <div class="button-wrapper">
+                    <p class="errorMessage" id="errorMessage"></p>
+                    <input type="submit" id="signInButton" class="button" value="Войти" />
+                </div>
+            </form>
+            <div class="link-button" onclick="openRegistration();">Нет аккаунта? Зарегистрироваться</div>
+        </div>
+        <div class="window-wrapper hidden" id="registrationForm">
+            <form class="window" onsubmit="signUp(this.inputNicknameRegister.value, this.inputPhoneRegister.value, this.inputEmailRegister.value,
+                                                  this.inputFirstNameRegister.value, this.inputLastNameRegister.value, this.inputPatronymicRegister.value, this.inputPasswordRegister.value); return false;">
+                <p>Регистрация</p>
+                <input type="text" name="nickname" class="input" id="inputNicknameRegister" placeholder="Имя пользователя*" required />
+                <input type="email" name="email" class="input" id="inputEmailRegister" placeholder="E-mail*" required />
+                <input type="tel" name="phone" class="input" id="inputPhoneRegister" placeholder="Телефон*" required />
+                <input type="text" name="firstName" class="input" id="inputFirstNameRegister" placeholder="Имя" />
+                <input type="text" name="lastName" class="input" id="inputLastNameRegister" placeholder="Фамилия" />
+                <input type="text" name="patronymic" class="input" id="inputPatronymicRegister" placeholder="Отчество" />
+                <input type="password" name="password" class="input" id="inputPasswordRegister" placeholder="Пароль*" required />
+                <div class="button-wrapper">
+                    <p class="errorMessage" id="errorMessageRegistration"></p>
+                    <input type="submit" id="signUpButton" class="button" value="Зарегистрироваться" />
+                </div>
+            </form>
+            <div class="link-button" onclick="openLogin();">Уже есть аккаунт? Авторизация</div>
+        </div>
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script>
+        function openLogin() {
+            $("#loginForm").removeClass("hidden");
+            $("#registrationForm").addClass("hidden");
+        }
+        function openRegistration() {
+            $("#loginForm").addClass("hidden");
+            $("#registrationForm").removeClass("hidden");
+        }
+
+        function signIn(username, password) {
+            $("#signInButton").val("Загрузка...");
+            $("#errorMessage").html("");
+            $.ajax({
+                type: "POST",
+                url: "api/auth/signIn",
+                data: JSON.stringify({ Username: username, Password: password }),
+                contentType: 'application/json',
+                success: function (response) {
+                    if (!response.error) {
+                        window.location.href = "/";
+                    } else {
+                        $("#errorMessage").html(response.errorMessage);
+                    }
+                    $("#signInButton").val("Войти");
+                }
+            });
+        }
+        function signUp(username, phone, email, firstName, lastName, patronymic, password) {
+            $("#signUpButton").val("Загрузка...");
+            $("#errorMessageRegistration").removeClass("success");
+            $("#errorMessageRegistration").html("");
+            $.ajax({
+                type: "POST",
+                url: "api/auth/signUp",
+                data: JSON.stringify({
+                    Username: username, Phone: phone, Email: email, FirstName: firstName,
+                    LastName: lastName, Patronymic: patronymic, Password: password
+                }),
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response == "") {
+                        $("#errorMessageRegistration").html("Вы были успешно зарегистрированы.<br/>Проверьте свою почту и подтвердите регистрацию.");
+                        $("#errorMessageRegistration").addClass("success");
+                    } else {
+                        $("#errorMessageRegistration").html(response);
+                    }
+                    $("#signUpButton").val("Зарегистрироваться");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
