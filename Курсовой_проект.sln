@@ -2,12 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
-MinimumVisualStudioVersion = 10.0.40219.1
+MinimumVisualStudioVersion = 10.0.40219.1 //Минимальная версия Visual studio
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Курсовой_проект", "Курсовой_проект\Курсовой_проект.csproj", "{09C3C998-A7FF-4C28-8A86-5508AC0BC619}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Курсовой_проект.DBMigration", "DBMigration\Курсовой_проект.DBMigration.csproj", "{80D26D39-A4ED-435B-855E-FB9878330B71}"
 EndProject
-Global
+Global //Функция Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -28,4 +28,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {721B1047-4849-48BD-89A9-CEFF832DE35A}
 	EndGlobalSection
-EndGlobal
+EndGlobal //Конец функции Global
